@@ -111,11 +111,6 @@
                         </a>
                     </li>
 
-                    <li class="{{ (request()->path() == 'administration') ? "panel active" : "panel" }}">
-                        <a href="#">
-                            <i class="icon-lock"></i> Administration
-                        </a> 
-                    </li>
                     <li class="{{ (request()->path() == 'payment') ? "panel active" : "panel" }}"> 
                         <a href="#">
                             <i class="icon-usd"></i> Proceed Payment

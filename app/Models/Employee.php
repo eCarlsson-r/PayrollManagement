@@ -17,12 +17,25 @@ class Employee extends Model
     protected $fillable = [
         'id', 'first_name', 'last_name', 'position', 'dob', 
         'email', 'contact', 'address', 'qualification',
-        'career', 'pay_method', 'bank', 'bank_account', 'manager'
+        'career', 'pay_method', 'bank', 'bank_account', 'manager',
+        'scheme', 'hourly_rate', 'salary_amount', 'commission_rate'
     ];
     protected $guarded = ['id'];
 
     public function account() {
         return $this->belongsTo(Account::class);
+    }
+
+    public function hourly() {
+        return $this->hasOne(Hourly::class);
+    }
+
+    public function salary() {
+        return $this->hasOne(Salary::class);
+    }
+
+    public function salesman() {
+        return $this->hasOne(Salesman::class);
     }
 
     public function feedbacks() {

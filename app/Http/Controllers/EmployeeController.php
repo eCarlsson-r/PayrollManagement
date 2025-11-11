@@ -62,7 +62,8 @@ class EmployeeController extends Controller
                 [
                     'first_name', 'last_name', 'position', 'dob', 
                     'email', 'contact', 'address', 'qualification', 
-                    'career', 'pay_method'
+                    'career', 'pay_method', 'scheme', 
+                    'hourly_rate', 'salary_amount', 'commission_rate'
                 ]
             )
         );
@@ -91,7 +92,8 @@ class EmployeeController extends Controller
                     [
                         'id', 'first_name', 'last_name', 'position', 'dob', 
                         'email', 'contact', 'address', 'qualification', 'career', 
-                        'pay_method', 'bank', 'bank_account'
+                        'pay_method', 'bank', 'bank_account', 'scheme', 
+                        'hourly_rate', 'salary_amount', 'commission_rate'
                     ]
                 ),
                 function ($value) {
