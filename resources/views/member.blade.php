@@ -58,7 +58,7 @@
                                                 </div>
                                                 <div>
                                                     {{ $notification->data['title'] }}<br /> 
-                                                    <span class="label label-primary">Feedback</span> 
+                                                    <span class="label label-primary">{{ $notification->data['type'] }}</span> 
                                                 </div>
                                             </a>
                                         </li>

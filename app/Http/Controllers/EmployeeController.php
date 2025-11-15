@@ -36,7 +36,7 @@ class EmployeeController extends Controller
     public function team()
     {
         return view('EmployeeTeam', [
-            'new_members' => Employee::where('manager', "")->where('id', '!=', 'admin')->where('id', '!=', auth()->user()->employee->id)->get(),
+            'new_members' => Employee::where('manager', '')->where('id', '!=', 'admin')->where('id', '!=', auth()->user()->employee->id)->get(),
             'team_members' => Employee::where('manager', auth()->user()->employee->id)->get()
         ]);
     }
@@ -61,7 +61,7 @@ class EmployeeController extends Controller
             'id' => $id,
             'bank' => '',
             'bank_account' => '',
-            'manager' => 0
+            'manager' => ''
         );
         $empData = array_merge(
             $empData, $request->only(

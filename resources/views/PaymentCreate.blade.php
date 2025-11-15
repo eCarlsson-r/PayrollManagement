@@ -31,11 +31,11 @@
                                 <tbody>
                                 @foreach ($payments_to_made as $Apymt)
                                     <tr class="gradeA">
-                                        <td>{{ $Apymt["employee_id"] }}</td>
+                                        <td>{{ $Apymt["employee_id"] ?? '' }}</td>
                                         <td>{{ $Apymt["base_amount"] }}</td>
                                         <td>{{ $Apymt["hours_worked"] }}</td>
-                                        <td>{{ $Apymt["late_days"] }}</td>
-                                        <td>{{ $Apymt["commision"] }}</td>
+                                        <td>{{ $Apymt["late_days"] ?? '0' }}</td>
+                                        <td>{{ $Apymt["commision"] ?? '0' }}</td>
                                         <td>{{ $Apymt["amount"] }}</td>
                                     </tr>
                                 @endforeach

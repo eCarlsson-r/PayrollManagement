@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Vish4395\LaravelFileViewer\LaravelFileViewer;
+use App\Models\Account;
 use App\Models\Document;
 use App\Models\Timecard;
 use App\Models\Receipt;
+use App\Notifications\DocumentUpload;
 
 class DocumentController extends Controller
 {
@@ -34,7 +36,7 @@ class DocumentController extends Controller
     {
         if ($request->hasFile('file') && $request->file('file')->isValid()) {
             $path = $request->file->storePubliclyAs('documents', $request->file->getClientOriginalName(), 'public');
-            Document::create([
+            $document = Document::create([
                 'employee_id' => auth()->user()->employee->id,
                 'manager' => auth()->user()->employee->manager,
                 'subject' => $request->input('subject'),
@@ -43,6 +45,8 @@ class DocumentController extends Controller
                 'file' => Storage::url($path),
                 'verified' => 'U'
             ]);
+
+            Account::where('employee_id', auth()->user()->employee->manager)->first()->notify(new DocumentUpload($document));
         }
         return back();
     }

@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Feedback;
-use App\Models\Employee;
+use App\Models\Account;
+use App\Notifications\DocumentUpload;
 
 class FeedbackController extends Controller
 {
@@ -38,11 +39,13 @@ class FeedbackController extends Controller
             'read' => 'U'
         ];
 
-        Feedback::create(
+        $feedback = Feedback::create(
             array_merge(
                 $feedbackData, request()->only(['title', 'feedback'])
             )
         );
+
+        Account::where('employee_id', auth()->user()->employee->manager)->first()->notify(new DocumentUpload($feedback));
 
         return back();
     }
