@@ -5,6 +5,7 @@
     <!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
 	
     <head>
+        @PwaHead <!-- Add this directive to include the PWA meta tags -->
         <meta charset="UTF-8">
         <title>@yield('title', 'Payroll Management System')</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -29,7 +30,7 @@
                 <ul class="dropdown-menu dropdown-menu-right">
                     @foreach (auth()->user()->unreadNotifications as $notification)
                         <li>
-                            @if ($notification->data['type'] == "feedback")
+                            @if ($notification->type == "App\Notifications\FeedbackSent")
                                 <a href="/feedback/{{ $notification->data['id'] }}">
                             @else
                                 <a href="/document/{{ $notification->data['id'] }}">
@@ -39,7 +40,7 @@
                                 </div>
                                 <div>
                                     {{ $notification->data['title'] }}<br /> 
-                                    @if ($notification->data['type'] == "feedback")
+                                    @if ($notification->type == "App\Notifications\FeedbackSent")
                                         <span class="label label-info">Feedback</span>
                                     @else
                                         <span class="label label-warning">Document</span>
@@ -96,12 +97,12 @@
                     @endif
 
                     @if (auth()->user()->type == "Employee" || auth()->user()->type=="Manager")
-                    <li>
+                    <li class="{{ (request()->path() == 'document/create') ? "active" : "" }}">
                         <a href="/document/create">
                             <i class="fa fa-upload"></i> Upload File  
                         </a>
                     </li>
-                    <li>
+                    <li class="{{ (request()->path() == 'feedback/create') ? "active" : "" }}">
                         <a href="/feedback/create">
                             <i class="fa fa-edit"></i> Write Feedback  
                         </a>
@@ -146,26 +147,26 @@
                     @if (auth()->user()->type=="Manager" || auth()->user()->type=="Admin")
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown">
-                                @if (count(auth()->user()->notifications) > 0)
-                                    <span class="badge">{{ count(auth()->user()->notifications) }}</span> <i class="fa fa-envelope"></i>&nbsp; <i class="fa fa-chevron-down"></i>
+                                @if (count(auth()->user()->unreadNotifications) > 0)
+                                    <span class="badge">{{ count(auth()->user()->unreadNotifications) }}</span> <i class="fa fa-envelope"></i>&nbsp; <i class="fa fa-chevron-down"></i>
                                 @else
                                     <i class="fa fa-envelope"></i>&nbsp; <i class="fa fa-chevron-down"></i>
                                 @endif
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
-                                @foreach (auth()->user()->notifications as $notification)
+                                @foreach (auth()->user()->unreadNotifications as $notification)
                                     <li>
-                                        @if ($notification->data['type'] == "feedback")
-                                            <a href="/feedback/{{ $notification->data['id'] }}">
+                                        @if ($notification->type == "App\Notifications\FeedbackSent")
+                                            <a href="/feedback/{{ $notification->id }}">
                                         @else
-                                            <a href="/document/{{ $notification->data['id'] }}">
+                                            <a href="/document/{{ $notification->id }}">
                                         @endif
                                             <div>
                                                 <strong>{{ $notification->data['employee_name'] }}</strong>
                                             </div>
                                             <div>
                                                 {{ $notification->data['title'] }}<br /> 
-                                                @if ($notification->data['type'] == "feedback")
+                                                @if ($notification->type == "App\Notifications\FeedbackSent")
                                                     <span class="label label-info">Feedback</span>
                                                 @else
                                                     <span class="label label-warning">Document</span>
@@ -210,5 +211,6 @@
             <p class="navbar-text text-center">&copy; Carlsson Studio 2025</p>
         </nav>
         @yield('script')
+        @RegisterServiceWorkerScript <!-- This registers the service worker -->
     </body>
 </html>

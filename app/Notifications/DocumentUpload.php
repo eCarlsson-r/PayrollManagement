@@ -4,8 +4,9 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\WebPush\WebPushMessage;
+use NotificationChannels\WebPush\WebPushChannel;
 
 use App\Models\Employee;
 
@@ -28,7 +29,7 @@ class DocumentUpload extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database', WebPushChannel::class];
     }
 
     /**
@@ -40,7 +41,32 @@ class DocumentUpload extends Notification
         return [
             'id' => $this->document->id,
             'employee_name' => $employee->first_name . ' ' . $employee->last_name,
-            'title' => (isset($this->document->title)) ? $this->document->title : $this->document->subject
+            'title' => $this->document->subject
         ];
+    }
+
+    /**
+     * Get the broadcast representation of the notification.
+     */
+    public function toWebPush($notifiable, $notification)
+    {
+        return (new WebPushMessage)
+            ->title($this->document->subject)
+            ->body($employee->first_name . ' ' . $employee->last_name . ' uploaded a new document.')
+            ->action('View Document', 'document')
+            ->data([
+                'id' => $this->document->id,
+                'employee_name' => $employee->first_name . ' ' . $employee->last_name,
+                'title' => $this->document->subject
+            ])
+            ->options(['TTL' => 1000]);
+            // ->badge()
+            // ->dir()
+            // ->image()
+            // ->lang()
+            // ->renotify()
+            // ->requireInteraction()
+            // ->tag()
+            // ->vibrate()
     }
 }

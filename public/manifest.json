@@ -1,0 +1,16 @@
+{
+    "name": "Payroll Management System",
+    "short_name": "PayrollMS",
+    "background_color": "#f8f8f8",
+    "display": "fullscreen",
+    "description": "Progressive Web Application for payroll management.",
+    "theme_color": "#e7e7e7",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "icon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

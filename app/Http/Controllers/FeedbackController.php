@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Account;
 use App\Models\Feedback;
 use App\Notifications\FeedbackSent;
 
@@ -43,7 +44,7 @@ class FeedbackController extends Controller
             )
         );
 
-        auth()->user()->employee->manager->account->notify(new FeedbackSent($feedback));
+        Account::where('employee_id', auth()->user()->employee->manager)->first()->notify(new FeedbackSent($feedback));
 
         return back();
     }
@@ -53,7 +54,8 @@ class FeedbackController extends Controller
      */
     public function show($id)
     {
-        //
+        auth()->user()->unreadNotifications->find($id)->markAsRead();
+        return redirect('feedback');
     }
 
     /**
