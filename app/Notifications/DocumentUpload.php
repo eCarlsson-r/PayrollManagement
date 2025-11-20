@@ -4,13 +4,13 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Notification;    
 use NotificationChannels\WebPush\WebPushMessage;
 use NotificationChannels\WebPush\WebPushChannel;
-
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use App\Models\Employee;
 
-class DocumentUpload extends Notification
+class DocumentUpload extends Notification implements ShouldBroadcastNow
 {
     use Queueable;
 
@@ -29,7 +29,8 @@ class DocumentUpload extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database', WebPushChannel::class];
+        return ['database', 'broadcast'];
+        //return ['database', 'broadcast', WebPushChannel::class];
     }
 
     /**
@@ -48,18 +49,28 @@ class DocumentUpload extends Notification
     /**
      * Get the broadcast representation of the notification.
      */
+    public function toBroadcast(object $notifiable): array
+    {
+        $employee = Employee::find($this->document->employee_id);
+        return [
+            'id' => $this->document->id,
+            'employee_name' => $employee->first_name . ' ' . $employee->last_name,
+            'title' => $this->document->subject
+        ];
+    }
+
     public function toWebPush($notifiable, $notification)
     {
+        $employee = Employee::find($this->document->employee_id);
         return (new WebPushMessage)
             ->title($this->document->subject)
-            ->body($employee->first_name . ' ' . $employee->last_name . ' uploaded a new document.')
-            ->action('View Document', 'document')
+            ->body($employee->first_name . ' ' . $employee->last_name . ' at ' . $this->document->date)
+            ->action('View Document', '/document/'.$this->document->id)
             ->data([
                 'id' => $this->document->id,
                 'employee_name' => $employee->first_name . ' ' . $employee->last_name,
                 'title' => $this->document->subject
             ])
-            ->options(['TTL' => 1000]);
             // ->badge()
             // ->dir()
             // ->image()
@@ -68,5 +79,6 @@ class DocumentUpload extends Notification
             // ->requireInteraction()
             // ->tag()
             // ->vibrate()
+            ->options(['TTL' => 1000]);
     }
 }

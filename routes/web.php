@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\EmployeeController;
@@ -23,8 +22,12 @@ Route::middleware('guest')->group(function() {
 });
 
 Route::middleware('auth')->group(function() {
-    Route::get('/logout', [AccountController::class, 'destroy']);
     Route::get('/payment', [PaymentController::class, 'index']);
+
+    Route::controller(AccountController::class)->group(function() {
+        Route::get('/logout', 'destroy');
+        Route::post('/push', 'index');
+    });
 
     Route::controller(EmployeeController::class)->group(function() {
         Route::get('/employee/{id}/edit', 'edit');

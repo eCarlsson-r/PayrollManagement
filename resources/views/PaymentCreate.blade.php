@@ -36,12 +36,12 @@
                             <tbody>
                             @foreach ($payments_to_made as $Apymt)
                                 <tr class="gradeA">
-                                    <td><input class="form-control" name="payments[{{ $loop->iteration }}][employee_id]" readonly value="{{ $Apymt["employee_id"] ?? '' }}"></td>
-                                    <td><input class="form-control" name="payments[{{ $loop->iteration }}][base_amount]" value="{{ $Apymt["base_amount"] }}"></td>
-                                    <td><input class="form-control" name="payments[{{ $loop->iteration }}][hours_worked]" value="{{ $Apymt["hours_worked"] }}"></td>
-                                    <td><input class="form-control" name="payments[{{ $loop->iteration }}][late_days]" value="{{ $Apymt["late_days"] ?? '0' }}"></td>
-                                    <td><input class="form-control" name="payments[{{ $loop->iteration }}][commision]" value="{{ $Apymt["commision"] ?? '0' }}"></td>
-                                    <td><input class="form-control" name="payments[{{ $loop->iteration }}][amount]" value="{{ $Apymt["amount"] }}"></td>
+                                    <td><input class="form-control" name="payments[{{ $loop->iteration }}][employee_id]" readonly value="{{ $Apymt['employee_id'] ?? '' }}"></td>
+                                    <td><input class="form-control" name="payments[{{ $loop->iteration }}][base_amount]" value="{{ $Apymt['base_amount'] ?? '' }}"></td>
+                                    <td><input class="form-control" name="payments[{{ $loop->iteration }}][hours_worked]" value="{{ $Apymt['hours_worked'] ?? '' }}"></td>
+                                    <td><input class="form-control" name="payments[{{ $loop->iteration }}][late_days]" value="{{ $Apymt['late_days'] ?? '' }}"></td>
+                                    <td><input class="form-control" name="payments[{{ $loop->iteration }}][commision]" value="{{ $Apymt['commision'] ?? '' }}"></td>
+                                    <td><input class="form-control" name="payments[{{ $loop->iteration }}][amount]" value="{{ $Apymt['amount'] ?? '' }}"></td>
                                 </tr>
                             @endforeach
                             </tbody>

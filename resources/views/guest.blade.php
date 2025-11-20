@@ -19,7 +19,6 @@
                 </div>
             </div>
         </div>
-        @yield('script')
         @RegisterServiceWorkerScript <!-- This registers the service worker -->
     </body>
 </html>

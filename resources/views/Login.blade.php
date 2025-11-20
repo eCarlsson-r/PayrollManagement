@@ -91,20 +91,3 @@
     </div>
 </div>
 @endsection
-
-@section('script')
-<script>
-    document.querySelectorAll('.list-inline li > a').forEach(button => {
-        button.addEventListener('click', function () {
-            var activeForm = this.getAttribute('show') + ' > form';
-            document.querySelectorAll(".tab-pane").forEach(tab => tab.classList.remove('active'));
-            document.querySelector(this.getAttribute('show')).classList.add('active');
-            document.querySelector(activeForm).classList.add('magictime', 'swap');
-            //set timer to 1 seconds, after that, unload the magic animation
-            setTimeout(function () {
-                document.querySelector(activeForm).classList.remove('magictime', 'swap');
-            }, 1000);
-        });
-    });
-</script>
-@endsection

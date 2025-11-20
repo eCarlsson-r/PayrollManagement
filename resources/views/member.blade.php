@@ -9,6 +9,7 @@
         <meta charset="UTF-8">
         <title>@yield('title', 'Payroll Management System')</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <![endif]-->
@@ -210,7 +211,11 @@
         <nav class="navbar navbar-default navbar-fixed-bottom">
             <p class="navbar-text text-center">&copy; Carlsson Studio 2025</p>
         </nav>
-        @yield('script')
-        @RegisterServiceWorkerScript <!-- This registers the service worker -->
+
+        <script>
+            window.userId = {{ auth()->user()->id }};
+            window.publicKey = '{{ config('webpush.vapid.public_key') }}';
+        </script>
+        @vite(['resources/js/echo.js'])
     </body>
 </html>
