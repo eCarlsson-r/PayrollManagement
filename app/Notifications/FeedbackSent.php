@@ -20,6 +20,8 @@ class FeedbackSent extends Notification implements ShouldBroadcastNow
     public function __construct($feedback)
     {
         $this->feedback = $feedback;
+        $employee = Employee::find($feedback->employee_id);
+        $this->feedback->name = $employee->first_name . ' ' . $employee->last_name;
     }
 
     /**
@@ -29,8 +31,7 @@ class FeedbackSent extends Notification implements ShouldBroadcastNow
      */
     public function via(object $notifiable): array
     {
-        return ['database', 'broadcast'];
-        //return ['database', 'broadcast', WebPushChannel::class];
+        return ['database', 'broadcast', WebPushChannel::class];
     }
 
     /**
@@ -38,10 +39,9 @@ class FeedbackSent extends Notification implements ShouldBroadcastNow
      */
     public function toDatabase(object $notifiable): array
     {
-        $employee = Employee::find($this->feedback->employee_id);
         return [
             'id' => $this->feedback->id,
-            'employee_name' => $employee->first_name . ' ' . $employee->last_name,
+            'employee_name' => $this->feedback->name,
             'title' => $this->feedback->title
         ];
     }
@@ -51,10 +51,9 @@ class FeedbackSent extends Notification implements ShouldBroadcastNow
      */
     public function toBroadcast(object $notifiable): array
     {
-        $employee = Employee::find($this->feedback->employee_id);
         return [
             'id' => $this->feedback->id,
-            'employee_name' => $employee->first_name . ' ' . $employee->last_name,
+            'employee_name' => $this->feedback->name,
             'title' => $this->feedback->title
         ];
     }
@@ -63,11 +62,11 @@ class FeedbackSent extends Notification implements ShouldBroadcastNow
     {
         return (new WebPushMessage)
             ->title($this->feedback->title)
-            ->body($employee->first_name . ' ' . $employee->last_name)
+            ->body($this->feedback->name)
             ->action('View Feedback', '/feedback/'.$this->feedback->id)
             ->data([
                 'id' => $this->feedback->id,
-                'employee_name' => $employee->first_name . ' ' . $employee->last_name,
+                'employee_name' => $this->feedback->name,
                 'title' => $this->feedback->title
             ])
             // ->badge()

@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-lg-12">
             <h2 class="pull-left"> Profile </h2>
-            <h2><button class="btn btn-primary pull-right" type="submit">Save changes</button></h2>
+            <h2 class="pull-right"><button class="btn btn-primary" type="submit">Save changes</button></h2>
         </div>
     </div>
     <div class="row">

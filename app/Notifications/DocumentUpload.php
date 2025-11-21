@@ -20,6 +20,8 @@ class DocumentUpload extends Notification implements ShouldBroadcastNow
     public function __construct($data)
     {
         $this->document = $data;
+        $employee = Employee::find($this->document->employee_id);
+        $this->document->name = $employee->first_name . ' ' . $employee->last_name;
     }
 
     /**
@@ -29,8 +31,7 @@ class DocumentUpload extends Notification implements ShouldBroadcastNow
      */
     public function via(object $notifiable): array
     {
-        return ['database', 'broadcast'];
-        //return ['database', 'broadcast', WebPushChannel::class];
+        return ['database', 'broadcast', WebPushChannel::class];
     }
 
     /**
@@ -38,10 +39,9 @@ class DocumentUpload extends Notification implements ShouldBroadcastNow
      */
     public function toDatabase(object $notifiable): array
     {
-        $employee = Employee::find($this->document->employee_id);
         return [
             'id' => $this->document->id,
-            'employee_name' => $employee->first_name . ' ' . $employee->last_name,
+            'employee_name' => $this->document->name,
             'title' => $this->document->subject
         ];
     }
@@ -51,24 +51,22 @@ class DocumentUpload extends Notification implements ShouldBroadcastNow
      */
     public function toBroadcast(object $notifiable): array
     {
-        $employee = Employee::find($this->document->employee_id);
         return [
             'id' => $this->document->id,
-            'employee_name' => $employee->first_name . ' ' . $employee->last_name,
+            'employee_name' => $this->document->name,
             'title' => $this->document->subject
         ];
     }
 
     public function toWebPush($notifiable, $notification)
     {
-        $employee = Employee::find($this->document->employee_id);
         return (new WebPushMessage)
             ->title($this->document->subject)
-            ->body($employee->first_name . ' ' . $employee->last_name . ' at ' . $this->document->date)
+            ->body($this->document->name . ' at ' . $this->document->date)
             ->action('View Document', '/document/'.$this->document->id)
             ->data([
                 'id' => $this->document->id,
-                'employee_name' => $employee->first_name . ' ' . $employee->last_name,
+                'employee_name' => $this->document->name,
                 'title' => $this->document->subject
             ])
             // ->badge()

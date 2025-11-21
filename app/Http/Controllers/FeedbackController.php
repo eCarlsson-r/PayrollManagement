@@ -54,7 +54,14 @@ class FeedbackController extends Controller
      */
     public function show($id)
     {
-        auth()->user()->unreadNotifications->find($id)->markAsRead();
+        $notificationObject = auth()->user()->unreadNotifications->find($id);
+        if ($notificationObject) $notificationObject->markAsRead();
+        else {
+            foreach (auth()->user()->unreadNotifications as $notification) {
+                if ($notification["data"]["id"] == $id) $notification->markAsRead();
+            }
+        }
+        
         return redirect('feedback');
     }
 
@@ -71,6 +78,9 @@ class FeedbackController extends Controller
      */
     public function update($id)
     {
+        foreach (auth()->user()->unreadNotifications as $notification) {
+            if ($notification["data"]["id"] == $id) $notification->markAsRead();
+        }
         Feedback::find($id)->update(['read' => 'R']);
         return back();
     }

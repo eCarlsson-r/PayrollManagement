@@ -9,7 +9,7 @@ use App\Http\Controllers\PaymentController;
 Route::get('/', function () {
     if (auth()->guest()) return view('Login', request()->all());
     else return redirect()->intended('/employee/'.auth()->user()->employee->id.'/edit');
-});
+})->name('login');
 
 Route::middleware('guest')->group(function() {
     Route::controller(AccountController::class)->group(function() {

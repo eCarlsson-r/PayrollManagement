@@ -19,6 +19,13 @@
     <body>
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
                 @mobile
                 @if (auth()->user()->type=="Manager" || auth()->user()->type=="Admin")
                 <button type="button" class="navbar-toggle" data-toggle="dropdown">
@@ -58,15 +65,7 @@
                     </li>
                 </ul>
                 @endif
-                @endmobile
-
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-navbar" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @mobile
+                
                 <a href="/employee/{{ auth()->user()->employee->id }}/edit" class="navbar-brand" style="padding-top: 8px;">
                     <img src="{{URL::asset('/banner.png')}}" width="" height="40" alt="" />
                 </a>

@@ -48,27 +48,7 @@ window.Echo.private("App.Models.Account."+window["userId"]).notification((notifi
     }
     notificationObject += '</div></a></li><li class="divider"></li>';
 
-    document.querySelector("a.text-center").parentElement.insertAdjacentHTML('beforebegin', notificationObject);
-
-    /*navigator.serviceWorker.getRegistration().then((reg) => {
-        // Option A: Use service worker registration to show the notification
-        if (reg && reg.showNotification) {
-            reg.showNotification(notification.title || 'Notification', {
-                body: notification.employee_name || '',
-                icon: notification.icon || '/logo.png',
-                data: notification || {}
-            });
-            return;
-        }
-
-        // Option B: If no registration available, show via page Notification API
-        if (Notification.permission === 'granted') {
-            new Notification(notification.title || 'Notification', {
-                body: notification.employee_name || '',
-                icon: notification.icon || '/logo.png'
-            });
-        }
-    }).catch((err) => console.error('SW registration error', err));*/
+    document.querySelector("a.text-center").parentElement.parentElement.firstElementChild.insertAdjacentHTML('beforebegin', notificationObject);
 });
 
 function urlBase64ToUint8Array(base64String) {

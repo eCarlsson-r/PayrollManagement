@@ -56,7 +56,14 @@ class DocumentController extends Controller
      */
     public function show($id)
     {
-        auth()->user()->unreadNotifications->find($id)->markAsRead();
+        $notificationObject = auth()->user()->unreadNotifications->find($id);
+        if ($notificationObject) $notificationObject->markAsRead();
+        else {
+            foreach (auth()->user()->unreadNotifications as $notification) {
+                if ($notification["data"]["id"] == $id) $notification->markAsRead();
+            }
+        }
+
         return redirect('document');
     }
 
@@ -73,6 +80,9 @@ class DocumentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        foreach (auth()->user()->unreadNotifications as $notification) {
+            if ($notification["data"]["id"] == $id) $notification->markAsRead();
+        }
         $document = Document::find($id);
         if ($document->subject == "Time Card") {
             Timecard::create([
