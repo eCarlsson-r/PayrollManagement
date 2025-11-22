@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-lg-12">
             <h2 class="pull-left"> Employee Data </h2>
-            <h2><button class="btn btn-primary pull-right" type="submit">Submit</button></h2>
+            <h2 class="pull-right"><button class="btn btn-primary" type="submit">Submit</button></h2>
         </div>
     </div>
     <hr />

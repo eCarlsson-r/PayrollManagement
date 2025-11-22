@@ -39,11 +39,11 @@
                     <div class="panel-body">
                         <div class="form-group">
                             <label for="login-email">E-mail address</label>
-                            <input type="email" id="login-email" name="email" placeholder="Username" class="form-control" />
+                            <input type="email" id="login-email" name="email" class="form-control" />
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" id="password" name="password" placeholder="Password" class="form-control" />
+                            <input type="password" id="password" name="password" class="form-control" />
                         </div>
                         <div class="form-group text-center">
                             <input name="login" class="btn btn-primary" type="submit" value="Sign in">

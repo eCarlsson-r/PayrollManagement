@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-lg-4 col-lg-push-4">
                     <div class="form-group text-center">
-                        <img src="{{asset('banner.png')}}" id="logoimg" alt=" Logo" />
+                        <img class="img-responsive" src="{{asset('banner.png')}}" id="logoimg" alt=" Logo" />
                     </div>
                     @yield('content')
                 </div>
